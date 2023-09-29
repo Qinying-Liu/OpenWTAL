@@ -16,25 +16,25 @@ We conduct experiments on the following environment: <br>
 ## Train and Evaluate
 1. Train the CASE model by run 
    ```
-   python main.py --exp_name CASE
+   python main_case.py --exp_name CASE
    ```
    Train the ASL model by run 
    ```
-   python main.py --exp_name ASL
+   python main_asl.py --exp_name ASL
    ```
    Train the AICL model by run 
    ```
-   python main.py --exp_name AICL
+   python main_aicl.py --exp_name AICL
    ```
 2. The pre-trained model will be saved in the `./outputs` folder. You can evaluate the model by running the command below.
    ```
-   python main.py --exp_name CASE --inference_only
+   python main_case.py --exp_name CASE --inference_only
    ```
    ```
-   python main.py --exp_name ASL --inference_only
+   python main_asl.py --exp_name ASL --inference_only
    ```
    ```
-   python main.py --exp_name AICL --inference_only
+   python main_aicl.py --exp_name AICL --inference_only
    ```
 
 ## Todo
