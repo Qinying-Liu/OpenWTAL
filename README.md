@@ -35,7 +35,12 @@ We conduct experiments on the following environment: <br>
    ```
    ```
    python main.py --exp_name AICL --inference_only
-   ```   
+   ```
+
+## Todo
+1. Code for ActivityNet
+2. Code for more methods, e.g., C3BN, BAS-Net
+
  ## References
 
 * [https://github.com/Pilhyeon/BaSNet-pytorch](https://github.com/Pilhyeon/BaSNet-pytorch)
