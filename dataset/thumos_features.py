@@ -1,18 +1,36 @@
 import os
-import csv
 import json
 import numpy as np
 import torch
-import pdb
-import time
 import random
-import utils
-import config.config_thumos as config
 from torch.utils.data import Dataset
-from config.config_thumos import Config, parse_args, class_dict
+
+class_dict = {
+    0: 'BaseballPitch',
+    1: 'BasketballDunk',
+    2: 'Billiards',
+    3: 'CleanAndJerk',
+    4: 'CliffDiving',
+    5: 'CricketBowling',
+    6: 'CricketShot',
+    7: 'Diving',
+    8: 'FrisbeeCatch',
+    9: 'GolfSwing',
+    10: 'HammerThrow',
+    11: 'HighJump',
+    12: 'JavelinThrow',
+    13: 'LongJump',
+    14: 'PoleVault',
+    15: 'Shotput',
+    16: 'SoccerPenalty',
+    17: 'TennisSwing',
+    18: 'ThrowDiscus',
+    19: 'VolleyballSpiking'}
+
 
 class ThumosFeature(Dataset):
-    def __init__(self, data_path, mode, modal, feature_fps, num_segments, len_feature, sampling, seed=-1, supervision='weak'):
+    def __init__(self, data_path, mode, modal, feature_fps, num_segments, len_feature, sampling, seed=-1,
+                 supervision='weak'):
         if seed >= 0:
             torch.manual_seed(seed)
             np.random.seed(seed)
@@ -71,9 +89,9 @@ class ThumosFeature(Dataset):
 
         if self.modal == 'all':
             rgb_feature = np.load(os.path.join(self.feature_path[0],
-                                    vid_name + '.npy')).astype(np.float32)
+                                               vid_name + '.npy')).astype(np.float32)
             flow_feature = np.load(os.path.join(self.feature_path[1],
-                                    vid_name + '.npy')).astype(np.float32)
+                                                vid_name + '.npy')).astype(np.float32)
 
             vid_num_seg = rgb_feature.shape[0]
 
@@ -90,7 +108,7 @@ class ThumosFeature(Dataset):
             feature = np.concatenate((rgb_feature, flow_feature), axis=1)
         else:
             feature = np.load(os.path.join(self.feature_path,
-                                    vid_name + '.npy')).astype(np.float32)
+                                           vid_name + '.npy')).astype(np.float32)
 
             vid_num_seg = feature.shape[0]
 
@@ -133,7 +151,7 @@ class ThumosFeature(Dataset):
                     tmp_start = round(tmp_start_sec * t_factor)
                     tmp_end = round(tmp_end_sec * t_factor)
 
-                    temp_anno[tmp_start:tmp_end+1, class_idx] = 1
+                    temp_anno[tmp_start:tmp_end + 1, class_idx] = 1
 
             temp_anno = temp_anno[sample_idx, :]
 
