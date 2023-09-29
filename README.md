@@ -12,19 +12,7 @@ We conduct experiments on the following environment: <br>
 ## Data Preparation
 1. Download the features of THUMOS dataset from [https://github.com/Pilhyeon/BaSNet-pytorch](https://github.com/Pilhyeon/BaSNet-pytorch). 
 2. Place the features inside the `./data` folder.
-## Core Files
-1. Configuration:
-   
-   `./config/config_*.py`
-2. Data loading: 
-   
-   `./dataset/thumos_features.py`  
-3. Model definition:
 
-   `./models/model.py`
-4. Training process: 
-
-   `./main_*.py`
 ## Train and Evaluate
 1. Train the CASE model by run 
    ```
