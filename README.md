@@ -26,7 +26,7 @@ We conduct experiments on the following environment: <br>
    ```
    python main.py --exp_name AICL
    ```
-2. We provide a pre-trained model in the `./outputs` folder. You can evaluate the model by running the command below.
+2. The pre-trained model will be saved in the `./outputs` folder. You can evaluate the model by running the command below.
    ```
    python main.py --exp_name CASE --inference_only
    ```
