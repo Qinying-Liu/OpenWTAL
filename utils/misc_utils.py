@@ -90,7 +90,7 @@ def upgrade_resolution(arr, scale):
 
 
 def result2json(result):
-    from config.config_thumos import class_dict
+    from dataset.thumos_features import class_dict
     result_file = []
     for i in range(len(result)):
         for j in range(len(result[i])):
