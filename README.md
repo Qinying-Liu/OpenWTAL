@@ -5,7 +5,7 @@ A unified and simple codebase for weakly-supervised temporal action localization
 
 
 ## Data Preparation
-1. Download the features of THUMOS14 from [rec](https://rec.ustc.edu.cn/share/e1472d30-5f38-11ee-a8ae-cff932c459ec). 
+1. Download the features of THUMOS14 from [dataset.zip](https://rec.ustc.edu.cn/share/e1472d30-5f38-11ee-a8ae-cff932c459ec). 
 2. Place the features inside the `./data` folder.
 
 ## Train and Evaluate
@@ -31,6 +31,7 @@ A unified and simple codebase for weakly-supervised temporal action localization
    ```
    python main_aicl.py --exp_name AICL --inference_only
    ```
+   We provide our pre-trained checkpoints in [checkpoints.zip](https://rec.ustc.edu.cn/share/ba014cd0-5f3a-11ee-9e84-ebc071ec19ed)
 
 ## Todo
 1. Code for ActivityNet
