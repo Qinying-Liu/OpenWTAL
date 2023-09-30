@@ -1,6 +1,5 @@
 import numpy as np
 import argparse
-import shutil
 import os
 
 
@@ -16,8 +15,6 @@ def parse_args():
     # data parameters
     parser.add_argument('--modal', type=str, default='all', choices=['rgb', 'flow', 'all'])
     parser.add_argument('--num_segments', default=750, type=int)
-    parser.add_argument('--num_segments1', default=50, type=int)
-    parser.add_argument('--num_segments2', default=1500, type=int)
     parser.add_argument('--scale', default=24, type=int)
 
     # model parameters
@@ -27,8 +24,7 @@ def parse_args():
     parser.add_argument('--lr', type=float, default=0.0001, help='learning rates for steps(list form)')
     parser.add_argument('--batch_size', type=int, default=16)
     parser.add_argument('--num_epochs', type=int, default=300)
-    parser.add_argument('--detection_inf_step', default=50, type=int,
-                        help="Run detection inference every n steps")  # 50
+    parser.add_argument('--detection_inf_step', default=50, type=int, help="Run detection inference every n steps")
     parser.add_argument('--q_val', default=0.7, type=float)
 
     # inference parameters
@@ -45,6 +41,10 @@ def parse_args():
     parser.add_argument('--num_workers', type=int, default=8)
     parser.add_argument('--seed', type=int, default=1, help='random seed (-1 for no manual seed)')  # 42
     parser.add_argument('--verbose', default=False, action='store_true')
+
+    # AICL parameters
+    parser.add_argument('--num_segments1', default=50, type=int)
+    parser.add_argument('--num_segments2', default=1500, type=int)
 
     return init_args(parser.parse_args())
 
@@ -82,8 +82,6 @@ class Config(object):
         self.seed = args.seed
         self.feature_fps = 25
         self.num_segments = args.num_segments
-        self.num_segments1 = args.num_segments1
-        self.num_segments2 = args.num_segments2
         self.num_epochs = args.num_epochs
         self.gamma = args.gamma
         self.inference_only = args.inference_only
@@ -95,25 +93,5 @@ class Config(object):
         self.load_weight = args.load_weight
         self.verbose = args.verbose
 
-
-class_dict = {
-    0: 'BaseballPitch',
-    1: 'BasketballDunk',
-    2: 'Billiards',
-    3: 'CleanAndJerk',
-    4: 'CliffDiving',
-    5: 'CricketBowling',
-    6: 'CricketShot',
-    7: 'Diving',
-    8: 'FrisbeeCatch',
-    9: 'GolfSwing',
-    10: 'HammerThrow',
-    11: 'HighJump',
-    12: 'JavelinThrow',
-    13: 'LongJump',
-    14: 'PoleVault',
-    15: 'Shotput',
-    16: 'SoccerPenalty',
-    17: 'TennisSwing',
-    18: 'ThrowDiscus',
-    19: 'VolleyballSpiking'}
+        self.num_segments1 = args.num_segments1
+        self.num_segments2 = args.num_segments2

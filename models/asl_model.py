@@ -33,4 +33,4 @@ class WTALModel(nn.Module):
         action_flow = torch.sigmoid(self.action_module_flow(input[:, 1024:, :]))
         action_rgb = torch.sigmoid(self.action_module_rgb(input[:, :1024, :]))
 
-        return cas_fg, (action_flow, action_rgb)
+        return cas_fg, action_flow, action_rgb

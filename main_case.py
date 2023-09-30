@@ -103,18 +103,18 @@ class Trainer():
             print('Detection Avg map[0.1:0.7] = %f' % (np.sum(ap) / 7))
 
     def calculate_pesudo_target(self, batch_size, label, topk_indices):
-        clu_agnostic_gt = []
+        cls_agnostic_gt = []
         for b in range(batch_size):
             label_indices_b = torch.nonzero(label[b, :])[:, 0]
             topk_indices_b = topk_indices[b, :, label_indices_b]  # topk, num_actions
-            clu_agnostic_gt_b = torch.zeros((1, 1, self.config.num_segments)).cuda()
+            cls_agnostic_gt_b = torch.zeros((1, 1, self.config.num_segments)).cuda()
 
             # positive examples
             for gt_i in range(len(label_indices_b)):
-                clu_agnostic_gt_b[0, 0, topk_indices_b[:, gt_i]] = 1
-            clu_agnostic_gt.append(clu_agnostic_gt_b)
+                cls_agnostic_gt_b[0, 0, topk_indices_b[:, gt_i]] = 1
+            cls_agnostic_gt.append(cls_agnostic_gt_b)
 
-        return torch.cat(clu_agnostic_gt, dim=0)  # B, 1, num_segments
+        return torch.cat(cls_agnostic_gt, dim=0)  # B, 1, num_segments
 
     def evaluate(self, epoch=0):
         if self.step % self.config.detection_inf_step == 0:

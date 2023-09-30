@@ -97,18 +97,18 @@ class Trainer():
             print('Detection Avg map[0.1:0.7] = %f' % (np.sum(ap) / 7))
 
     def calculate_pesudo_target(self, batch_size, label, topk_indices):
-        clu_agnostic_gt = []
+        cls_agnostic_gt = []
         for b in range(batch_size):
             label_indices_b = torch.nonzero(label[b, :])[:, 0]
             topk_indices_b = topk_indices[b, :, label_indices_b]  # topk, num_actions
-            clu_agnostic_gt_b = torch.zeros((1, 1, self.config.num_segments)).cuda()
+            cls_agnostic_gt_b = torch.zeros((1, 1, self.config.num_segments)).cuda()
 
             # positive examples
             for gt_i in range(len(label_indices_b)):
-                clu_agnostic_gt_b[0, 0, topk_indices_b[:, gt_i]] = 1
-            clu_agnostic_gt.append(clu_agnostic_gt_b)
+                cls_agnostic_gt_b[0, 0, topk_indices_b[:, gt_i]] = 1
+            cls_agnostic_gt.append(cls_agnostic_gt_b)
 
-        return torch.cat(clu_agnostic_gt, dim=0)  # B, 1, num_segments
+        return torch.cat(cls_agnostic_gt, dim=0)  # B, 1, num_segments
 
     def evaluate(self, epoch=0):
         if self.step % self.config.detection_inf_step == 0:
@@ -116,13 +116,12 @@ class Trainer():
             with torch.no_grad():
                 self.net = self.net.eval()
                 mean_ap, test_acc, final_res, ap = inference(self.net, self.config, self.test_loader,
-                                                             cls_gt=self.cls_gt, model_file=None)
+                                                             model_file=None)
                 self.net = self.net.train()
 
             if mean_ap > self.best_mAP:
                 self.best_mAP = mean_ap
                 torch.save(self.net.state_dict(), os.path.join(self.config.model_path, "best_model.pkl"))
-                np.save(os.path.join(self.config.model_path, 'cls_gt.npy'), self.cls_gt.detach().cpu().numpy())
 
                 f_path = os.path.join(self.config.model_path, 'best.txt')
                 with open(f_path, 'w') as f:
@@ -168,22 +167,21 @@ class Trainer():
                 _data, _label = _data.cuda(), _label.cuda()
                 self.optimizer.zero_grad()
 
-                (cas_flow, cas_rgb), (att_flow, att_rgb) = self.net(_data)
+                cas, att_flow, att_rgb = self.net(_data)
                 # cas_flow, cas_rgb: T-CAS (B, T, K)
                 # att_flow, att_rgb: attention weights (B, 1, T)
 
                 #################### baseline ####################
                 # multiple instance learning
                 combined_cas = misc_utils.instance_selection_function(
-                    cas_flow.softmax(-1) + cas_rgb.softmax(-1),
+                    cas.softmax(-1),
                     att_flow.permute(0, 2, 1),
                     att_rgb.permute(0, 2, 1))
                 _, topk_indices = torch.topk(combined_cas, self.config.num_segments // 8, dim=1)
-                cas_top_flow = torch.mean(torch.gather(cas_flow, 1, topk_indices), dim=1)
-                cas_top_rgb = torch.mean(torch.gather(cas_rgb, 1, topk_indices), dim=1)
+                cas_top = torch.mean(torch.gather(cas, 1, topk_indices), dim=1)
 
                 # video classification loss
-                vid_loss = 0.5 * self.criterion(cas_top_flow, _label) + 0.5 * self.criterion(cas_top_rgb, _label)
+                vid_loss = self.criterion(cas_top, _label)
                 cost = vid_loss
 
                 # compute foreground/background pseudo-labels

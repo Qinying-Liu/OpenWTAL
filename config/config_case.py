@@ -42,7 +42,6 @@ def parse_args():
     parser.add_argument('--seed', type=int, default=1, help='random seed (-1 for no manual seed)')
     parser.add_argument('--verbose', default=False, action='store_true')
 
-
     # CASE parameters
     parser.add_argument('--num_clusters', default=16, type=int)
     parser.add_argument('--temp', default=10., type=float)
@@ -79,12 +78,6 @@ class Config(object):
         self.class_thresh = args.class_th
         self.act_thresh = np.arange(0.1, 1.0, 0.1)
         self.q_val = args.q_val
-        self.num_clusters = args.num_clusters
-        self.temp = args.temp
-        self.std = args.std
-        self.w_clu = args.w_clu
-        self.w_cls = args.w_cls
-        self.scale = args.scale
         self.scale = args.scale
         self.gt_path = os.path.join(self.data_path, 'gt.json')
         self.model_file = args.model_file
@@ -102,25 +95,8 @@ class Config(object):
         self.load_weight = args.load_weight
         self.verbose = args.verbose
 
-
-class_dict = {
-    0: 'BaseballPitch',
-    1: 'BasketballDunk',
-    2: 'Billiards',
-    3: 'CleanAndJerk',
-    4: 'CliffDiving',
-    5: 'CricketBowling',
-    6: 'CricketShot',
-    7: 'Diving',
-    8: 'FrisbeeCatch',
-    9: 'GolfSwing',
-    10: 'HammerThrow',
-    11: 'HighJump',
-    12: 'JavelinThrow',
-    13: 'LongJump',
-    14: 'PoleVault',
-    15: 'Shotput',
-    16: 'SoccerPenalty',
-    17: 'TennisSwing',
-    18: 'ThrowDiscus',
-    19: 'VolleyballSpiking'}
+        self.num_clusters = args.num_clusters
+        self.temp = args.temp
+        self.std = args.std
+        self.w_clu = args.w_clu
+        self.w_cls = args.w_cls

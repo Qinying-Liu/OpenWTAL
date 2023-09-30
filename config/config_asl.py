@@ -71,6 +71,7 @@ class Config(object):
         self.class_thresh = args.class_th
         self.act_thresh = np.arange(0.1, 1.0, 0.1)
         self.q_val = args.q_val
+        self.scale = args.scale
         self.gt_path = os.path.join(self.data_path, 'gt.json')
         self.model_file = args.model_file
         self.seed = args.seed
@@ -86,26 +87,3 @@ class Config(object):
         self.nms_thresh = args.nms_thresh
         self.load_weight = args.load_weight
         self.verbose = args.verbose
-
-
-class_dict = {
-    0: 'BaseballPitch',
-    1: 'BasketballDunk',
-    2: 'Billiards',
-    3: 'CleanAndJerk',
-    4: 'CliffDiving',
-    5: 'CricketBowling',
-    6: 'CricketShot',
-    7: 'Diving',
-    8: 'FrisbeeCatch',
-    9: 'GolfSwing',
-    10: 'HammerThrow',
-    11: 'HighJump',
-    12: 'JavelinThrow',
-    13: 'LongJump',
-    14: 'PoleVault',
-    15: 'Shotput',
-    16: 'SoccerPenalty',
-    17: 'TennisSwing',
-    18: 'ThrowDiscus',
-    19: 'VolleyballSpiking'}
