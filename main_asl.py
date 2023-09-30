@@ -67,9 +67,6 @@ class Trainer():
         self.criterion = CrossEntropyLoss()
         self.Lgce = GeneralizedCE(q=self.config.q_val)
 
-        # placeholder of clustering classification results
-        self.cls_gt = torch.ones((config.num_clusters, 2), dtype=torch.float).cuda() / config.num_clusters
-
         # parameters
         self.best_mAP = -1  # init
         self.step = 0
